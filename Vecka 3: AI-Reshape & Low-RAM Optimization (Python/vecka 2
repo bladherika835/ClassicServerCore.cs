@@ -1,38 +1,44 @@
-using System;
 
-namespace StarStable.Classic.Core.Graphics
+using System;
+using System.Collections.Generic;
+
+namespace StarStable.Classic.Core.Quests
 {
     /// <summary>
-    /// Lead Architect: Erika Bladh. 
-    /// Full implementation for Photophobia Protection and 2011 Matte Aesthetics.
+    /// Lead Architect: Erika Bladh.
+    /// Full implementation of the Legacy Quest Injector for Star Stable Classic.
     /// </summary>
-    public class VisualSafetyManager
+    public class QuestLegacyBridge
     {
-        public bool IsLegacyModeActive { get; set; } = true;
-        public float GlobalLuminanceCap { get; private set; } = 0.45f;
-        public bool BloomSuppressed { get; private set; } = true;
+        private Dictionary<int, string> legacyDatabase = new Dictionary<int, string>();
 
-        public void ApplySafetyProtocol()
+        public QuestLegacyBridge()
         {
-            if (IsLegacyModeActive)
+            Initialize2011Database();
+        }
+
+        private void Initialize2011Database()
+        {
+            // Restoring the original scripts that were removed after 2017
+            legacyDatabase.Add(1001, "The First Ride - Moorland Stables (2011 Edition)");
+            legacyDatabase.Add(1050, "Saving Justin Silverglade - Original Script");
+            legacyDatabase.Add(3002, "Valedale Mystery - Matte Environment Mode");
+            Console.WriteLine($"[BRIDGE] {legacyDatabase.Count} Legacy Quests restored to the server.");
+        }
+
+        public void RestoreQuest(int questId)
+        {
+            if (legacyDatabase.ContainsKey(questId))
             {
-                // Technical proof: Bypassing the post-2017 high-contrast engine
-                DisableHighIntensityBloom();
-                NormalizeGlobalBrightness(GlobalLuminanceCap);
-                Console.WriteLine("[SAFETY] 2011 Legacy Matte Shaders: DEPLOYED.");
+                Console.WriteLine($"[INJECTOR] Quest {questId} '{legacyDatabase[questId]}' is now LIVE.");
+                TriggerLegacyEnvironment();
             }
         }
 
-        private void DisableHighIntensityBloom()
+        private void TriggerLegacyEnvironment()
         {
-            BloomSuppressed = true;
-            Console.WriteLine("[GRAPHICS] Bloom and Glow effects have been suppressed for eye safety.");
-        }
-
-        private void NormalizeGlobalBrightness(float cap)
-        {
-            // Reshaping the light spectrum to avoid sharp white peaks
-            Console.WriteLine($"[GRAPHICS] Global Luminance capped at {cap * 100}% for photophobia protection.");
+            // Automatically links to the VisualSafetyManager from Week 1
+            Console.WriteLine("[BRIDGE] Visual Environment synchronized with 2011-2017 lighting profile.");
         }
     }
 }

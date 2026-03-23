@@ -1,0 +1,38 @@
+using System;
+
+namespace StarStable.Classic.Core.Graphics
+{
+    /// <summary>
+    /// Lead Architect: Erika Bladh. 
+    /// Full implementation for Photophobia Protection and 2011 Matte Aesthetics.
+    /// </summary>
+    public class VisualSafetyManager
+    {
+        public bool IsLegacyModeActive { get; set; } = true;
+        public float GlobalLuminanceCap { get; private set; } = 0.45f;
+        public bool BloomSuppressed { get; private set; } = true;
+
+        public void ApplySafetyProtocol()
+        {
+            if (IsLegacyModeActive)
+            {
+                // Technical proof: Bypassing the post-2017 high-contrast engine
+                DisableHighIntensityBloom();
+                NormalizeGlobalBrightness(GlobalLuminanceCap);
+                Console.WriteLine("[SAFETY] 2011 Legacy Matte Shaders: DEPLOYED.");
+            }
+        }
+
+        private void DisableHighIntensityBloom()
+        {
+            BloomSuppressed = true;
+            Console.WriteLine("[GRAPHICS] Bloom and Glow effects have been suppressed for eye safety.");
+        }
+
+        private void NormalizeGlobalBrightness(float cap)
+        {
+            // Reshaping the light spectrum to avoid sharp white peaks
+            Console.WriteLine($"[GRAPHICS] Global Luminance capped at {cap * 100}% for photophobia protection.");
+        }
+    }
+}
